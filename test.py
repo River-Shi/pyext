@@ -1,6 +1,6 @@
 from vec import Vec
 import collections
-import codon
+# import codon
 import random
 import time
 
@@ -17,7 +17,7 @@ class RollingMedianCodon:
         self.data.append(value)
         return self.get_median()
         
-    @codon.jit
+    # @codon.jit
     def get_median(self):
         sorted_data = sorted(self.data)
         mid = len(sorted_data) // 2
