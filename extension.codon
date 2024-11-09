@@ -1,0 +1,56 @@
+import collections
+import random
+import time
+
+@dataclass(python=True)
+class Vec:
+    x: float
+    y: float
+
+    def __init__(self, x: float = 0.0, y: float = 0.0):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other: Vec):
+        return Vec(self.x + other.x, self.y + other.y)
+
+    def __add__(self, other: float):
+        return Vec(self.x + other, self.y + other)
+
+    def __repr__(self):
+        return f'Vec({self.x}, {self.y})'
+
+
+class RollingMedian:
+    n: int 
+    data: collections.deque[float]
+
+    def __init__(self, n: int = 10):
+        self.n = n
+        self.data = collections.deque(maxlen=n)
+
+    def input(self, value: float):
+        self.data.append(value)
+        return self.get_median()
+        
+
+    def get_median(self):
+        sorted_data = sorted(self.data)
+        mid = len(sorted_data) // 2
+
+        if len(sorted_data) % 2 == 0:
+            return (sorted_data[mid - 1] + sorted_data[mid]) / 2.0
+        else:
+            return sorted_data[mid]
+
+def test_performance():
+    rolling_median_normal = RollingMedian(n=20)
+    test_data = [random.uniform(0, 1000) for _ in range(100000)]
+    start_time = time.time()
+    for value in test_data:
+        rolling_median_normal.input(value)
+    normal_time = time.time() - start_time
+    
+    print(f"Codon Version: {normal_time:.4f}秒")
+
+test_performance()
